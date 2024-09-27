@@ -39,6 +39,7 @@ public class Bot4 : IBot
     public int Complete(Result result)
     {
         AddNewWord.AddWordToDatabase(result.word!);
+        BotResultTextWriter.WriteText(result.word!, BotName);
         return 0;
     }
 }
