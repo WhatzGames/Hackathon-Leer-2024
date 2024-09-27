@@ -4,6 +4,7 @@
     {
         public static IBot CreateBot(string botName)
             => botName switch{
-                _ or "JackyOne" => new Bot1(botName)
+                "JackyTwo" => new Bot2(botName),
+                _ or "JackyOne" => new Bot1(botName),
                 };
     }
