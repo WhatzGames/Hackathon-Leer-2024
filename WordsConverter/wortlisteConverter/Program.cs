@@ -9,24 +9,43 @@ Console.WriteLine("Hello, World!");
 foreach (string file in Directory.EnumerateFiles(dataDir))
 {
     var originalLines = File.ReadLines(file);
+    Console.WriteLine($"Start reading {file}");
 
+    int count = 0;
+    
     foreach (string line in originalLines)
     {
-        if (!WordHasValidChars(line))
+        try
         {
-            continue;
-        }
-
-        string sanitizedLine = SanitizeLine(line).ToUpper();
-
-        if (sanitizedLine.Length >= 5)
-        {
-            if (!WordExists(sanitizedLine))
+            var currentSplitLine = line.Split(' ')[0];
+            if (!WordHasValidChars(currentSplitLine))
             {
-                InsertWord(sanitizedLine);
+                continue;
+            }
+
+            string sanitizedLine = SanitizeLine(currentSplitLine).ToUpper();
+
+            if (sanitizedLine.Length >= 5)
+            {
+                if (!WordExists(sanitizedLine))
+                {
+                    InsertWord(sanitizedLine);
+                    count++;
+                }
+            }
+
+            if (count % 100_000 == 0 && count > 0)
+            {
+                Console.WriteLine($"Added {count} entries already");
             }
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.WriteLine($"Could not work with line {line}");
+        }
     }
+    Console.WriteLine($"Added {count} entries");
 }
 
 
