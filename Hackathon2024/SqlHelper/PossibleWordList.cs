@@ -4,7 +4,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace Hackathon2024.SqlHelper;
 
-public class PossibleWordList(DbConfiguration dbConfiguration)
+public class PossibleWordList()
 {
     private readonly List<string> _possibleWordList = [];
     private readonly StringBuilder _sb = new StringBuilder();
@@ -15,7 +15,7 @@ public class PossibleWordList(DbConfiguration dbConfiguration)
         try
         {
             _sb.Clear();
-            using var connection = dbConfiguration.GetDatabaseConnection();
+            using var connection = DbConfiguration.GetDatabaseConnection();
             connection.Open();
             using var command = new SqliteCommand(sql, connection);
 
@@ -68,7 +68,7 @@ public class PossibleWordList(DbConfiguration dbConfiguration)
 
     private string GetSelectStatement(string word)
     {
-        return "SELECT * FROM " + dbConfiguration.GetTableName() + " WHERE "
-             + dbConfiguration.GetColumnName() + " LIKE '%" + word + "%'";
+        return "SELECT * FROM " + DbConfiguration.GetTableName() + " WHERE "
+             + DbConfiguration.GetColumnName() + " LIKE '%" + word + "%'";
     }
 }

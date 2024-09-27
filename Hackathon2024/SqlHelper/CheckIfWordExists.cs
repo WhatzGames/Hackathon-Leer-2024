@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Data;
+using System.Data.Common;
 using Microsoft.Data.Sqlite;
 
 namespace Hackathon2024.SqlHelper;
@@ -10,6 +11,7 @@ public static class CheckIfWordExists
         var sql = MatchCountQuery(word);
         using var connection = DbConfiguration.GetDatabaseConnection();
         using var command = new SqliteCommand(sql, connection);
+        command.Parameters.Add("@word", SqliteType.Text).Value = word;
         
         connection.Open();
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)

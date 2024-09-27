@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Data;
+using Microsoft.Data.Sqlite;
 
 namespace Hackathon2024.SqlHelper;
 
@@ -16,15 +17,18 @@ public static class AddNewWord
         using var connection = DbConfiguration.GetDatabaseConnection();
 
         using var command = new SqliteCommand(sql, connection);
-        command.Parameters.Add(word);
+        command.Parameters.Add("@word", SqliteType.Text).Value = word;
 
         try
         {
+            connection.Open();
             command.ExecuteNonQuery();
+            connection.Close();
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            connection.Close();
         }
     }
 
