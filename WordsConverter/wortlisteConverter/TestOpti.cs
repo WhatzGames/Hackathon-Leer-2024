@@ -34,7 +34,6 @@ public class TestOpti
                     {
                         _list.Add(sanitizedLine);
                         counter++;
-                        InsertWord(sanitizedLine);
                     }
                 }
 
@@ -116,10 +115,11 @@ public class TestOpti
             {
                 sb.Append(i);
                 sb.Append(")");
+                continue;
             }
 
             sb.Append(i);
-            sb.Append(";");
+            sb.Append(",");
         }
 
         return sb.ToString();
