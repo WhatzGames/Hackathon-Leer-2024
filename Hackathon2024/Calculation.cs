@@ -33,16 +33,9 @@ namespace Hackathon2024 ;
                                     .Select(x => x.Key)
                                     .First();
             }
-
-            (char key, double value) best = ('E', 0);
-            foreach ((char key, double value) in probabilities)
-            {
-                double probability = value / wordCount;
-                if (probability > best.value)
-                {
-                    best = (key, probability);
-                }
-            }
-            return best.key;
+            
+            return probabilities.OrderByDescending(x => x.Value)
+                         .Select(x => x.Key)
+                         .First();
         }
     }

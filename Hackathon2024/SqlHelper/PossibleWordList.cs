@@ -11,7 +11,9 @@ public class PossibleWordList()
 
     public List<string> GetPossibleWordList(string word, List<char> guessed)
     {
-        var sql = BuildSql(word, guessed);
+        var wrongGuesses = GetWrongGuesses(word, guessed);
+        
+        var sql = BuildSql(word, wrongGuesses);
         try
         {
             _sb.Clear();
@@ -42,20 +44,19 @@ public class PossibleWordList()
             Console.WriteLine(e);
             throw;
         }
-        
+
+        Console.WriteLine($"{_possibleWordList.Count} mögliche Wörter gefunden");
         return _possibleWordList;
     }
     
-    private string BuildSql(string word, List<char> guessed)
+    private string BuildSql(string word, List<char> wrongGuesses)
     {
         _sb.Append(GetSelectStatement(word));
-        
-        
-        if (guessed.Count > 0)
+        if (wrongGuesses.Count > 0)
         {
-            for (int i = 0; i < guessed.Count; i++)
+            for (int i = 0; i < wrongGuesses.Count; i++)
             {
-                var c = guessed[i].ToString().ToUpper();
+                var c = wrongGuesses[i].ToString().ToUpper();
                 _sb.Append(" AND not instr(word, '");
                 _sb.Append(c);
                 _sb.Append("') > 0");
@@ -70,5 +71,19 @@ public class PossibleWordList()
     {
         return "SELECT * FROM " + DbConfiguration.GetTableName() + " WHERE "
              + DbConfiguration.GetColumnName() + " LIKE '%" + word + "%'";
+    }
+
+    private List<char> GetWrongGuesses(string word, List<char> guessed)
+    {
+        var wrongGuesses = new List<char>();
+        foreach (char c in guessed)
+        {
+            if (!word.Contains(c))
+            {
+                wrongGuesses.Add(c);
+            }            
+        }
+
+        return wrongGuesses;
     }
 }
