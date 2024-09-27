@@ -4,7 +4,6 @@ namespace Hackathon2024.SqlHelper;
 
 public class DbConfiguration
 {
-    private readonly string _rootDirectory = Environment.CurrentDirectory;
     private const string TableName = "words";
     private const string ColumnName = "word";
     
@@ -13,23 +12,23 @@ public class DbConfiguration
         
     }
 
-    public SqliteConnection GetDatabaseConnection()
+    public static SqliteConnection GetDatabaseConnection()
     {
         var dataSource = GetDirectory();
         return new SqliteConnection(dataSource);
     }
 
-    private string GetDirectory()
+    private static string GetDirectory()
     {
-        return "Data Source =" + _rootDirectory + "\\db.sqlite";
+        return "Data Source =" + Environment.CurrentDirectory + "\\db.sqlite";
     }
 
-    public string GetTableName()
+    public static string GetTableName()
     {
         return TableName;
     }
 
-    public string GetColumnName()
+    public static string GetColumnName()
     {
         return ColumnName;
     }
