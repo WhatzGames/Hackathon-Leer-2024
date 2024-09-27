@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Text.Json;
+using Hackathon2024.DTO;
 using SocketIOClient;
 using SocketIOClient.Transport;
 
@@ -20,17 +22,22 @@ await socketIo.EmitAsync("authenticate", (success) => Console.WriteLine($"Authen
 
     socketIo.On("data", async (response) =>
     {
-        var game = response.GetValue<dynamic>();
-        switch (game.type)
+        using var game = response.GetValue<JsonDocument>();
+        string? type = game.RootElement.GetProperty("type")
+            .GetString();
+        switch (type)
         {
             case "INIT":
                 Console.WriteLine("Init");
+                response.GetValue<Init>();
                 break;
             case "RESULT":
                 Console.WriteLine("Result");
+                response.GetValue<Result>();
                 break;
             case "ROUND":
                 Console.WriteLine("Round");
+                response.GetValue<Round>();
                 break;
         }
     });

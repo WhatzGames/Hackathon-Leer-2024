@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackathon 24", "Hackathon 24\Hackathon 24.csproj", "{DAFD51A4-57DC-488A-A8C0-081326454756}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackathon2024", "Hackathon2024\Hackathon2024.csproj", "{DAFD51A4-57DC-488A-A8C0-081326454756}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
