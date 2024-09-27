@@ -1,4 +1,5 @@
 ﻿using Hackathon2024.DTO;
+using Hackathon2024.SqlHelper;
 
 namespace Hackathon2024 ;
 
@@ -24,6 +25,7 @@ namespace Hackathon2024 ;
 
         public int Complete(Result result)
         {
+            AddNewWord.AddWordToDatabase(result.result!);
             return 0;
         }
     }

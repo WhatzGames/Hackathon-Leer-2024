@@ -2,20 +2,18 @@
 
 namespace Hackathon2024.SqlHelper;
 
-public class AddNewWord
+public static class AddNewWord
 {
-    private readonly DbConfiguration _dbConfiguration;
-
-    public AddNewWord(DbConfiguration dbConfiguration)
+    public static void AddWordToDatabase(string word)
     {
-        _dbConfiguration = dbConfiguration;
-    }
-
-    public void AbbWordToDatabase(string word)
-    {
-        var sql = BuilSql(word);
+        if (CheckIfWordExists.WordIsInDb(word))
+        {
+            return;
+        }
         
-        using var connection = _dbConfiguration.GetDatabaseConnection();
+        var sql = BuildSql(word);
+        
+        using var connection = DbConfiguration.GetDatabaseConnection();
 
         using var command = new SqliteCommand(sql, connection);
         command.Parameters.Add(word);
@@ -30,8 +28,8 @@ public class AddNewWord
         }
     }
 
-    private string BuilSql(string word)
+    private static string BuildSql(string word)
     {
-        return "INSERT INTO " + _dbConfiguration.GetTableName() + $"({_dbConfiguration.GetColumnName()}) values (@word)";
+        return "INSERT INTO " + DbConfiguration.GetTableName() + $"({DbConfiguration.GetColumnName()}) values (@word)";
     }
 }
