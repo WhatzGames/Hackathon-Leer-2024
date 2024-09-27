@@ -1,6 +1,6 @@
 ﻿using Hackathon2024.DTO;
 
-namespace Hackathon2024 ;
+namespace Hackathon2024.Bots ;
 
     public interface IBot
     {
