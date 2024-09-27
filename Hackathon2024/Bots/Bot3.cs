@@ -40,7 +40,7 @@ namespace Hackathon2024.Bots ;
 
         public int Complete(Result result)
         {
-            AddNewWord.AddWordToDatabase(result.result!);
+            AddNewWord.AddWordToDatabase(result.word!);
             return 0;
         }
     }
