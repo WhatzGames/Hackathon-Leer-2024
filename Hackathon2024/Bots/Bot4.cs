@@ -39,9 +39,10 @@ namespace Hackathon2024.Bots ;
             return Calculation.CalculateMostLikelyWord(possibleWords, round.guessed);
         }
 
-        public int Complete(Result result)
-        {
-            AddNewWord.AddWordToDatabase(result.word!);
-            return 0;
-        }
+    public int Complete(Result result)
+    {
+        AddNewWord.AddWordToDatabase(result.word!);
+        BotResultTextWriter.WriteText(result.word!, BotName);
+        return 0;
     }
+}
