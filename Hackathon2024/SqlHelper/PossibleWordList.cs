@@ -12,7 +12,7 @@ public class PossibleWordList(DbConfiguration dbConfiguration)
         try
         {
             using var connection = dbConfiguration.GetDatabaseConnection();
-
+            connection.Open();
             using var command = new SqliteCommand(sql, connection);
 
             using var reader = command.ExecuteReader();
@@ -45,6 +45,6 @@ public class PossibleWordList(DbConfiguration dbConfiguration)
     private string BuildSql(string word)
     {
         return "SELECT * FROM " + dbConfiguration.GetTableName() + " WHERE "
-             + dbConfiguration.GetColumnName() + "LIKE \'" + word + "\'";
+             + dbConfiguration.GetColumnName() + " LIKE '%" + word + "%'";
     }
 }
