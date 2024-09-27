@@ -1,17 +1,21 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Text;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Primitives;
 
 namespace Hackathon2024.SqlHelper;
 
-public class PossibleWordList()
+public class PossibleWordList(DbConfiguration dbConfiguration)
 {
     private readonly List<string> _possibleWordList = [];
+    private readonly StringBuilder _sb = new StringBuilder();
 
-    public List<string> GetPossibleWordList(string word)
+    public List<string> GetPossibleWordList(string word, List<char> guessed)
     {
-        var sql = BuildSql(word);
+        var sql = BuildSql(word, guessed);
         try
         {
-            using var connection = DbConfiguration.GetDatabaseConnection();
+            _sb.Clear();
+            using var connection = dbConfiguration.GetDatabaseConnection();
             connection.Open();
             using var command = new SqliteCommand(sql, connection);
 
@@ -42,9 +46,29 @@ public class PossibleWordList()
         return _possibleWordList;
     }
     
-    private string BuildSql(string word)
+    private string BuildSql(string word, List<char> guessed)
     {
-        return "SELECT * FROM " + DbConfiguration.GetTableName() + " WHERE "
-             + DbConfiguration.GetColumnName() + " LIKE '%" + word + "%'";
+        _sb.Append(GetSelectStatement(word));
+        
+        
+        if (guessed.Count > 0)
+        {
+            for (int i = 0; i < guessed.Count; i++)
+            {
+                var c = guessed[i].ToString().ToUpper();
+                _sb.Append(" AND not instr(word, '");
+                _sb.Append(c);
+                _sb.Append("') > 0");
+            }
+        }
+        
+
+        return _sb.ToString();
+    }
+
+    private string GetSelectStatement(string word)
+    {
+        return "SELECT * FROM " + dbConfiguration.GetTableName() + " WHERE "
+             + dbConfiguration.GetColumnName() + " LIKE '%" + word + "%'";
     }
 }

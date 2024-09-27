@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Text.Json;
-using Hackathon2024;
+using Hackathon2024.Bots;
 using Hackathon2024.DTO;
 using SocketIOClient;
 using SocketIOClient.Transport;
