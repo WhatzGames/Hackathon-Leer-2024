@@ -33,9 +33,29 @@ namespace Hackathon2024 ;
                                     .Select(x => x.Key)
                                     .First();
             }
-            
+
             return probabilities.OrderByDescending(x => x.Value)
-                         .Select(x => x.Key)
-                         .First();
+                                .Select(x => x.Key)
+                                .First();
+        }
+
+        public static KeyValuePair<char, int> GetHits(IEnumerable<string> words, List<char> guessedCharacters)
+        {
+            Dictionary<char, int> hits = ALPHABET.Except(guessedCharacters)
+                                                 .Select(x => KeyValuePair.Create(x, 0))
+                                                 .ToDictionary();
+            foreach (string word in words)
+            {
+                HashSet<char> chars = [];
+                foreach (char c in word)
+                {
+                    if (chars.Add(c) && hits.ContainsKey(c))
+                    {
+                        hits[c] += 1;
+                    }
+                }
+            }
+            return hits.OrderByDescending(x => x.Value)
+                       .First();
         }
     }
