@@ -1,13 +1,13 @@
 ﻿using Hackathon_24;
 using Hackathon2024.DTO;
 
-namespace Hackathon2024 ;
+namespace Hackathon2024.Bots ;
 
     public class Bot2 : IBot
     {
         private List<char> _probabilities =
             LettersToPercentage.GetLettersToPercentage()
-                               .OrderBy(x => x.Value)
+                               .OrderByDescending(x => x.Value)
                                .Select(x => x.Key)
                                .ToList();
 
