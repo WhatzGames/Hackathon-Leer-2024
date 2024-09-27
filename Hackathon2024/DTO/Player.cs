@@ -1,4 +1,4 @@
-﻿namespace Hackathon_24.DTO;
+﻿namespace Hackathon2024.DTO;
 
 public class Player
 {

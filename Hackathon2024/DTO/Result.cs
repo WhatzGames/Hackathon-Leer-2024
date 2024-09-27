@@ -1,6 +1,6 @@
-﻿namespace Hackathon_24.DTO;
+﻿namespace Hackathon2024.DTO;
 
-public class Result
+public class Result : Game
 {
     public string? id { get; set; }
     public List<Player>? players { get; set; }
