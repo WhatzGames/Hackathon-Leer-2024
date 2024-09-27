@@ -14,7 +14,12 @@ namespace Hackathon2024 ;
 
         public char CalculateNextStep(Round round)
         {
-            return ALPHABET[Random.Shared.Next(0, ALPHABET.Length)];
+            char selected = ALPHABET[Random.Shared.Next(0, ALPHABET.Length)];
+            while (round.guessed!.Contains(selected))
+            {
+                selected = ALPHABET[Random.Shared.Next(0, ALPHABET.Length)];
+            }
+            return selected;
         }
 
         public int Complete(Result result)
