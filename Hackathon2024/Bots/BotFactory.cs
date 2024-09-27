@@ -1,4 +1,6 @@
-﻿namespace Hackathon2024.Bots ;
+﻿using Hackathon2024.SqlHelper;
+
+namespace Hackathon2024.Bots ;
 
     public sealed class BotFactory
     {
@@ -9,6 +11,8 @@
                 "JackyThree" =>
                     new Bot3(botName,
                         new FileInfo(Environment.CurrentDirectory + "/Hackathon2024/sanitizedwortliste.txt")),
+                "JackyFour" => new Bot4(new PossibleWordList(), botName),
+
                 _ => new Bot1(botName),
                 };
     }
