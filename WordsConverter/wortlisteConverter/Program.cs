@@ -2,7 +2,7 @@
 using Microsoft.Data.Sqlite;
 
 string dataDir = Path.Combine(Environment.CurrentDirectory, "data");
-string pathToSqlite = @"Data Source=C:\Dev\Hackathon-Leer-2024\db.sqlite";
+string pathToSqlite = @"Data Source=C:\Users\Kurt\RiderProjects\Hackathon 2024\Hackathon-Leer-2024\db.sqlite";
 
 Console.WriteLine("Hello, World!");
 
