@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Text.Json;
+using Hackathon2024;
 using Hackathon2024.DTO;
 using SocketIOClient;
 using SocketIOClient.Transport;
@@ -10,34 +11,66 @@ using var socketIo = new SocketIOClient.SocketIO("https://games.uhno.de", new So
     Transport = TransportProtocol.WebSocket
 });
 
-socketIo.OnConnected += (sender, e) => Console.WriteLine("Connected");
+    socketIo.OnConnected += (sender, e) => Console.WriteLine("Connected");
 
-socketIo.OnDisconnected += (sender, e) => Console.WriteLine("Disconnected");
+    socketIo.OnDisconnected += (sender, e) => Console.WriteLine("Disconnected");
 
-await socketIo.ConnectAsync();
+    await socketIo.ConnectAsync();
 
-Console.WriteLine("Trying to Authenticate");
+    Console.WriteLine("Trying to Authenticate");
 
-await socketIo.EmitAsync("authenticate", (success) => Console.WriteLine($"Authentication successful: {success}"), args[0]);
+    await socketIo.EmitAsync("authenticate", (success) => Console.WriteLine($"Authentication successful: {success}"),
+        args[1]);
+
+    Dictionary<Guid, IBot> bots = []; 
 
     socketIo.On("data", async (response) =>
     {
         using var game = response.GetValue<JsonDocument>();
-        string? type = game.RootElement.GetProperty("type")
-            .GetString();
+        JsonElement root = game.RootElement;
+        string? type = root.GetProperty("type")
+                           .GetString();
+        if (!root.GetProperty("id")
+                 .TryGetGuid(out Guid gameId))
+        {
+            Console.WriteLine("No game id found");
+        }
         switch (type)
         {
             case "INIT":
                 Console.WriteLine("Init");
-                response.GetValue<Init>();
-                break;
-            case "RESULT":
-                Console.WriteLine("Result");
-                response.GetValue<Result>();
+                Init? init = game.Deserialize<Init>();
+                if (init is null)
+                {
+                    Console.WriteLine("parsing init failed!");
+                    break;
+                }
+                bots[gameId] = BotFactory.CreateBot(args[0]);
                 break;
             case "ROUND":
                 Console.WriteLine("Round");
-                response.GetValue<Round>();
+                Round? round = game.Deserialize<Round>();
+                if (round is null)
+                {
+                    Console.WriteLine("parsing round failed!");
+                    break;
+                }
+                char character = bots[gameId].CalculateNextStep(round);
+                await response.CallbackAsync(character);
+                Console.WriteLine($"{gameId} selected {character}");
+                break;
+            case "RESULT":
+                Console.WriteLine("Result");
+                Result? result = game.Deserialize<Result>();
+                if (result is null)
+                {
+                    Console.WriteLine("parsing result failed!");
+                    break;
+                }
+                bots[gameId].Complete(result);
+                bots.Remove(gameId);
+                Console.WriteLine($"{gameId}: {(result.players?.Find(x => x.id == result.self)
+                                                      ?.score)} FOR WORD {result.word}");
                 break;
         }
     });
