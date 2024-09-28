@@ -5,7 +5,13 @@ namespace Hackathon2024.SqlHelper ;
 
     public class PossibleWordList()
     {
+        private readonly string _directory;
         private readonly StringBuilder _sb = new StringBuilder();
+
+        public PossibleWordList(string directory) : this()
+        {
+            _directory = directory;
+        }
 
         public List<string> GetPossibleWordList(string word, List<char> wrongGuesses)
         {
@@ -14,7 +20,7 @@ namespace Hackathon2024.SqlHelper ;
             try
             {
                 _sb.Clear();
-                using var connection = DbConfiguration.GetDatabaseConnection();
+                using var connection = DbConfiguration.GetDatabaseConnection(_directory);
                 connection.Open();
                 using var command = new SqliteCommand(sql, connection);
                 //Console.WriteLine($"request for {word} with {string.Join(',', wrongGuesses)}");
@@ -63,7 +69,7 @@ namespace Hackathon2024.SqlHelper ;
             try
             {
                 _sb.Clear();
-                using var connection = DbConfiguration.GetDatabaseConnection();
+                using var connection = DbConfiguration.GetDatabaseConnection(_directory);
                 connection.Open();
                 using var command = new SqliteCommand(sql, connection);
 

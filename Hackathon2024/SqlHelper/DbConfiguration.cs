@@ -12,10 +12,22 @@ public class DbConfiguration
         
     }
 
-    public static SqliteConnection GetDatabaseConnection()
+    public static SqliteConnection GetDatabaseConnection(string dir)
+    {
+        //var dataSource = GetDirectory();
+        var dataSource = GetCustomDirectory(dir);
+        return new SqliteConnection(dataSource);
+    }
+    
+    public static SqliteConnection GetDatabaseConnectionToSave()
     {
         var dataSource = GetDirectory();
         return new SqliteConnection(dataSource);
+    }
+
+    private static string GetCustomDirectory(string dir)
+    {
+        return "Data Source =" + dir;
     }
 
     private static string GetDirectory()
