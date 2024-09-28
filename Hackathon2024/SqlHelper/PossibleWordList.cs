@@ -1,9 +1,11 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Primitives;
 
 namespace Hackathon2024.SqlHelper ;
 
-    public class PossibleWordList()
+    public partial class PossibleWordList()
     {
         private readonly string _directory;
         private readonly StringBuilder _sb = new StringBuilder();
@@ -60,6 +62,86 @@ namespace Hackathon2024.SqlHelper ;
 
 
             return _sb.ToString();
+        }
+
+        [GeneratedRegex("([A-Z]_{1,2}[A-Z])|([A-Z]_{1,3})|(_{1,3}[A-Z])")]
+        private partial Regex SegmentRegex();
+
+        public List<string> GetPossibleSegments(string word, List<char> guesses)
+        {
+            HashSet<string> possibleSegments = [];
+            foreach (Match match in SegmentRegex().Matches(word))
+            {
+                foreach (Capture capture in match.Captures)
+                {
+                    string sql = BuildSegmentSql(capture, guesses);
+                    try
+                    {
+                        _sb.Clear();
+                        using var connection = DbConfiguration.GetDatabaseConnection(_directory);
+                        connection.Open();
+                        using var command = new SqliteCommand(sql, connection);
+
+                        using var reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            possibleSegments.Add(reader.GetString(0));
+                        }
+                    }
+                    catch (SqliteException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+                }
+            }
+            Console.WriteLine("Following words were found: {0}", string.Join(',', possibleSegments));
+            return possibleSegments.ToList();
+        }
+
+        private string BuildSegmentSql(Capture matchCapture, List<char> guesses)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("SELECT letter_pair FROM letter_indices WHERE ");
+            builder.Append($"letter_pair LIKE '{matchCapture.Value}' ");
+
+            int start = matchCapture.ValueSpan.IndexOf('_');
+            int end = matchCapture.ValueSpan.LastIndexOf('_') + 1;
+            int count = matchCapture.ValueSpan.Count('_');
+
+            var startSlice = matchCapture.ValueSpan[..start];
+            var endSlice = matchCapture.ValueSpan[end..];
+
+            foreach (var guess in guesses)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    builder.Append($"AND letter_pair NOT LIKE '{startSlice}");
+                    int j = 0;
+                    while (j < i)
+                    {
+                        builder.Append('_');
+                        j++;
+                    }
+                    j++;
+                    builder.Append(guess);
+                    while (j < count)
+                    {
+                        builder.Append('_');
+                        j++;
+                    }
+                    builder.Append($"{endSlice}' ");
+                }
+            }
+            
+            builder.Append("ORDER BY occurences DESC ");
+            builder.Append("LIMIT 1");
+            return builder.ToString();
         }
 
         public List<string> GetPossibleWordList(List<char> wrongGuessed)

@@ -29,7 +29,7 @@ public class BotfarmInit
 
         for (int i = 1; i <= MaxBots; i++)
         {
-            bots.Add(new Bot5(new PossibleWordList(dirs[i-1])));
+            bots.Add(new Bot7(new PossibleWordList(dirs[i-1])));
         }
         
 
