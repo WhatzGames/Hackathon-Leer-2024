@@ -9,7 +9,7 @@ public static class CheckIfWordExists
     public static bool WordIsInDb(string word)
     {
         var sql = MatchCountQuery(word);
-        using var connection = DbConfiguration.GetDatabaseConnection();
+        using var connection = DbConfiguration.GetDatabaseConnectionToSave();
         using var command = new SqliteCommand(sql, connection);
         command.Parameters.Add("@word", SqliteType.Text).Value = word;
         
