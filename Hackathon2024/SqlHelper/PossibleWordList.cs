@@ -7,7 +7,13 @@ namespace Hackathon2024.SqlHelper ;
 
     public partial class PossibleWordList()
     {
+        private readonly string _directory;
         private readonly StringBuilder _sb = new StringBuilder();
+
+        public PossibleWordList(string directory) : this()
+        {
+            _directory = directory;
+        }
 
         public List<string> GetPossibleWordList(string word, List<char> wrongGuesses)
         {
@@ -16,10 +22,10 @@ namespace Hackathon2024.SqlHelper ;
             try
             {
                 _sb.Clear();
-                using var connection = DbConfiguration.GetDatabaseConnection();
+                using var connection = DbConfiguration.GetDatabaseConnection(_directory);
                 connection.Open();
                 using var command = new SqliteCommand(sql, connection);
-                Console.WriteLine($"request for {word} with {string.Join(',', wrongGuesses)}");
+                //Console.WriteLine($"request for {word} with {string.Join(',', wrongGuesses)}");
                 using var reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -37,7 +43,7 @@ namespace Hackathon2024.SqlHelper ;
                 throw;
             }
 
-            Console.WriteLine($"WORD: {_possibleWordList.Count} mögliche Wörter gefunden");
+            //Console.WriteLine($"WORD: {_possibleWordList.Count} mögliche Wörter gefunden");
             return _possibleWordList;
         }
 
@@ -145,7 +151,7 @@ namespace Hackathon2024.SqlHelper ;
             try
             {
                 _sb.Clear();
-                using var connection = DbConfiguration.GetDatabaseConnection();
+                using var connection = DbConfiguration.GetDatabaseConnection(_directory);
                 connection.Open();
                 using var command = new SqliteCommand(sql, connection);
 
@@ -166,7 +172,7 @@ namespace Hackathon2024.SqlHelper ;
                 throw;
             }
 
-            Console.WriteLine($"GLOBAL {_possibleWordList.Count} mögliche Wörter gefunden");
+            //Console.WriteLine($"GLOBAL {_possibleWordList.Count} mögliche Wörter gefunden");
             return _possibleWordList;
         }
 
