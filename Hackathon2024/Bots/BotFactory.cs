@@ -12,6 +12,8 @@ namespace Hackathon2024.Bots ;
                     new Bot3(botName,
                         new FileInfo(Environment.CurrentDirectory + "/Hackathon2024/sanitizedwortliste.txt")),
                 "JackyFour" => new Bot4(new PossibleWordList(), botName),
+                "JackyeEight" => new Bot8(),
+                "JackyTen" => new Bot8(),
 
                 _ => new Bot1(botName),
                 };
