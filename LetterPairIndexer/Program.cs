@@ -12,6 +12,10 @@ for (char c = 'A'; c <= 'Z'; c++)
         for (char a = 'A'; a <= 'Z'; a++)
         {
             letterPairCount[$"{c}{h}{a}"] = 0;
+            for (char r = 'A'; r <= 'Z'; r++)
+            {
+                letterPairCount[$"{c}{h}{a}{r}"] = 0;
+            }
         }
     }
 }
@@ -37,6 +41,12 @@ while (reader.Read())
     for (int i = 0; i < currentWord.Length - 3; i++)
     {
         string letterpair = currentWord.Substring(i, 3).ToUpper();
+        if (WordHasValidChars(letterpair))
+            letterPairCount[letterpair]++;
+    }
+    for (int i = 0; i < currentWord.Length - 4; i++)
+    {
+        string letterpair = currentWord.Substring(i, 4).ToUpper();
         if (WordHasValidChars(letterpair))
             letterPairCount[letterpair]++;
     }
