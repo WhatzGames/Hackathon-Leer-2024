@@ -6,11 +6,9 @@ namespace Hackathon2024.Bots ;
     public sealed class Bot5 : IBot
     {
         private readonly PossibleWordList _possibleWordList;
-        public string BotName { get; }
 
-        public Bot5(PossibleWordList possibleWordList, string botName)
+        public Bot5(PossibleWordList possibleWordList)
         {
-            BotName = botName;
             _possibleWordList = possibleWordList;
         }
 
