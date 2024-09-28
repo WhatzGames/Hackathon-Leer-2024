@@ -11,6 +11,9 @@ public class RunningBot1 : IRunningBot
     private readonly string _botName;
     private readonly string _secret;
     private readonly IBot _bot;
+    private double _sumScore = 0;
+    private double _games = 0;
+    private double _avg = 0;
 
     public RunningBot1(string botName, string secret, IBot bot)
     {
@@ -54,6 +57,7 @@ public class RunningBot1 : IRunningBot
             {
                 case "INIT":
                     Console.WriteLine("Init");
+                    _games++;
                     Init? init = game.Deserialize<Init>();
                     if (init is null)
                     {
@@ -91,6 +95,8 @@ public class RunningBot1 : IRunningBot
                     bots.Remove(gameId);
                     Console.WriteLine($"{_botName}: {(result.players?.Find(x => x.id == result.self)
                                                            ?.score)} FOR WORD {result.word}");
+                    CalcAvg(result.players?.Find(x => x.id == result.self)
+                                 ?.score);
                     break;
             }
         });
@@ -99,5 +105,12 @@ public class RunningBot1 : IRunningBot
         {
             Console.WriteLine($"{_botName} still alive");
         }
+    }
+
+    private void CalcAvg(int? score)
+    {
+        _sumScore += (double)score;
+        _avg = _sumScore / _games;
+        Console.WriteLine($"{_botName} Average: " + _avg);
     }
 }
