@@ -11,16 +11,20 @@ using var socketIo = new SocketIOClient.SocketIO("https://games.uhno.de", new So
     Transport = TransportProtocol.WebSocket
 });
 
-    socketIo.OnConnected += (sender, e) => Console.WriteLine("Connected");
+    socketIo.OnConnected += (sender, e) =>
+    {
+        socketIo.EmitAsync("authenticate", (success) => Console.WriteLine($"Authentication successful: {success}"),args[1]);
+        Console.WriteLine("Connected");
+    };
 
     socketIo.OnDisconnected += (sender, e) => Console.WriteLine("Disconnected");
+    
+   
 
     await socketIo.ConnectAsync();
 
-    Console.WriteLine("Trying to Authenticate");
-
-    await socketIo.EmitAsync("authenticate", (success) => Console.WriteLine($"Authentication successful: {success}"),
-        args[1]);
+    // await socketIo.EmitAsync("authenticate", (success) => Console.WriteLine($"Authentication successful: {success}"),
+    //     args[1]);
 
     Dictionary<Guid, IBot> bots = []; 
 

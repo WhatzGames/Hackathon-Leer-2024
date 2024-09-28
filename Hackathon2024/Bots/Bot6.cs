@@ -3,17 +3,16 @@ using Hackathon2024.SqlHelper;
 
 namespace Hackathon2024.Bots ;
 
-    public sealed class Bot5 : IBot
+    public sealed class Bot6 : IBot
     {
         private readonly PossibleWordList _possibleWordList;
+        private char? randomlyGuessedChar;
         public string BotName { get; }
 
-        public Bot5(PossibleWordList possibleWordList, string botName)
+        public Bot6(PossibleWordList possibleWordList, string botName)
         {
-            BotName = botName;
             _possibleWordList = possibleWordList;
         }
-
         public char CalculateNextStep(Round round)
         {
             if (round.guessed.Count is 0)
@@ -25,12 +24,20 @@ namespace Hackathon2024.Bots ;
             List<string> possibleWords = _possibleWordList.GetPossibleWordList(round.word, wrongGuesses);
 
             (char character, int hits) = Calculation.GetHits(possibleWords, round.guessed);
+
+            if (randomlyGuessedChar is null)
+            {                
+                randomlyGuessedChar = Calculation.RandomLeftOver(round.guessed);
+                return randomlyGuessedChar.Value;
+            }
+            
             if (hits is 0)
             {
                 possibleWords = _possibleWordList.GetPossibleWordList(wrongGuesses);
             }
 
             (character, hits) = Calculation.GetHits(possibleWords, round.guessed);
+            
 
             return character;
         }
@@ -39,6 +46,6 @@ namespace Hackathon2024.Bots ;
         {
             AddNewWord.AddWordToDatabase(result.word!);
             BotResultTextWriter.WriteText(result.word!, BotName);
-            return 0;
+                return 0;
         }
     }
