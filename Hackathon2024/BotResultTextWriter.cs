@@ -20,7 +20,7 @@ public static class BotResultTextWriter
 
     private static bool CheckIfWordExists(string filename, string text)
     {
-        StreamReader reader = new StreamReader(filename); 
+        StreamReader reader = new StreamReader(filename, new FileStreamOptions{Mode = FileMode.OpenOrCreate, Share = FileShare.ReadWrite}); 
         while (!reader.EndOfStream)
         {
             if (reader.ReadLine()!.Equals(text))

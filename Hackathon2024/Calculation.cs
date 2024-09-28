@@ -58,4 +58,11 @@ namespace Hackathon2024 ;
             return hits.OrderByDescending(x => x.Value)
                        .First();
         }
+
+        public static char RandomLeftOver(IEnumerable<char> guessedCharacters)
+        {
+            var leftovers = ALPHABET.Except(guessedCharacters).ToArray();
+            Random.Shared.Shuffle(leftovers);
+            return leftovers.First();
+        }
     }
