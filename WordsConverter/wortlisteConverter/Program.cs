@@ -18,13 +18,13 @@ foreach (string file in Directory.EnumerateFiles(dataDir))
         try
         {
             var currentSplitLine = line.Split(' ')[0];
-            if (!WordHasValidChars(currentSplitLine))
+            string sanitizedLine = SanitizeLine(currentSplitLine).ToUpper();
+            
+            if (!WordHasValidChars(sanitizedLine))
             {
                 continue;
             }
-
-            string sanitizedLine = SanitizeLine(currentSplitLine).ToUpper();
-
+            
             if (sanitizedLine.Length >= 5)
             {
                 if (!WordExists(sanitizedLine))
@@ -57,7 +57,53 @@ string SanitizeLine(string s)
         .Replace("Ä", "ae")
         .Replace("Ü", "ue")
         .Replace("Ö", "oe")
-        .Replace("ß", "ss");
+        .Replace("ß", "ss")
+        .Replace("Ý", "y")
+        .Replace("ý", "y")
+        .Replace("Û", "u")
+        .Replace("Ú", "u")
+        .Replace("Ù", "u")
+        .Replace("û", "u")
+        .Replace("ù", "u")
+        .Replace("ú", "u")
+        .Replace("Õ", "o")
+        .Replace("Ô", "o")
+        .Replace("Ó", "o")
+        .Replace("Ò", "o")
+        .Replace("ó", "o")
+        .Replace("ô", "o")
+        .Replace("õ", "o")
+        .Replace("ó", "o")
+        .Replace("Ñ", "n")
+        .Replace("ñ", "n")
+        .Replace("Ð", "d")
+        .Replace("Ï", "i")
+        .Replace("Î", "i")
+        .Replace("Í", "i")
+        .Replace("Ì", "i")
+        .Replace("ì", "i")
+        .Replace("í", "i")
+        .Replace("î", "i")
+        .Replace("ï", "i")
+        .Replace("Ë", "e")
+        .Replace("Ê", "e")
+        .Replace("É", "e")
+        .Replace("È", "e")
+        .Replace("è", "e")
+        .Replace("é", "e")
+        .Replace("ê", "e")
+        .Replace("ë", "e")
+        .Replace("à", "a")
+        .Replace("á", "a")
+        .Replace("â", "a")
+        .Replace("ã", "a")
+        .Replace("å", "a")
+        .Replace("æ", "ae")
+        .Replace("Æ", "ae")
+        .Replace("Å", "a")
+        .Replace("Â", "a")
+        .Replace("Á", "a")
+        .Replace("À", "a");
 }
 
 bool WordHasValidChars(string word)
