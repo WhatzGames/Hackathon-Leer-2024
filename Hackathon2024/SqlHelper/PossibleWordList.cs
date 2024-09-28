@@ -17,7 +17,7 @@ namespace Hackathon2024.SqlHelper ;
                 using var connection = DbConfiguration.GetDatabaseConnection();
                 connection.Open();
                 using var command = new SqliteCommand(sql, connection);
-                Console.WriteLine($"request for {word} with {string.Join(',', wrongGuesses)}");
+                //Console.WriteLine($"request for {word} with {string.Join(',', wrongGuesses)}");
                 using var reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -35,7 +35,7 @@ namespace Hackathon2024.SqlHelper ;
                 throw;
             }
 
-            Console.WriteLine($"WORD: {_possibleWordList.Count} mögliche Wörter gefunden");
+            //Console.WriteLine($"WORD: {_possibleWordList.Count} mögliche Wörter gefunden");
             return _possibleWordList;
         }
 
@@ -84,7 +84,7 @@ namespace Hackathon2024.SqlHelper ;
                 throw;
             }
 
-            Console.WriteLine($"GLOBAL {_possibleWordList.Count} mögliche Wörter gefunden");
+            //Console.WriteLine($"GLOBAL {_possibleWordList.Count} mögliche Wörter gefunden");
             return _possibleWordList;
         }
 

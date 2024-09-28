@@ -4,7 +4,7 @@ namespace Hackathon2024.Bots ;
 
     public sealed class BotFactory
     {
-        public static IBot CreateBot(string botName)
+       /* public static IBot CreateBot(string botName)
             => botName switch{
                 "JackyOne" => new Bot1(botName),
                 "JackyTwo" => new Bot2(botName),
@@ -16,5 +16,5 @@ namespace Hackathon2024.Bots ;
                 "JackySix" => new Bot6(new PossibleWordList(), botName),
 
                 _ => new Bot1(botName),
-                };
+                };*/
     }
