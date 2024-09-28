@@ -56,7 +56,7 @@ string SanitizeLine(string s)
         .Replace("ü", "ue")
         .Replace("Ä", "ae")
         .Replace("Ü", "ue")
-        .Replace("Ö", "öe")
+        .Replace("Ö", "oe")
         .Replace("ß", "ss");
 }
 
