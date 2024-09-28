@@ -78,7 +78,7 @@ namespace Hackathon2024.SqlHelper ;
                     try
                     {
                         _sb.Clear();
-                        using var connection = DbConfiguration.GetDatabaseConnection();
+                        using var connection = DbConfiguration.GetDatabaseConnection(_directory);
                         connection.Open();
                         using var command = new SqliteCommand(sql, connection);
 

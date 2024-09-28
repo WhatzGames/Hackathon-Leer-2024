@@ -5,7 +5,7 @@ namespace Hackathon2024;
 
 public static class StartEndLetterProbability
 {
-    public static (Dictionary<char, double>, Dictionary<char, double>) GetLetterStartEndProbability()
+    /*public static (Dictionary<char, double>, Dictionary<char, double>) GetLetterStartEndProbability()
     {
         List<char> letters = ['A', 'B', 'C', 'D', 'E', 
             'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
@@ -40,7 +40,7 @@ public static class StartEndLetterProbability
         connection.Close();
         
         return (startLetterProbability, endLetterProbability);
-    }
+    }*/
     
     private static string BuildSqlForAllCases()
     {

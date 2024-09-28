@@ -6,12 +6,10 @@ namespace Hackathon2024.Bots ;
     public sealed class Bot7 : IBot
     {
         private readonly PossibleWordList _possibleWordList;
-        public string BotName { get; }
 
-        public Bot7(PossibleWordList possibleWordList, string botName)
+        public Bot7(PossibleWordList possibleWordList)
         {
             _possibleWordList = possibleWordList;
-            BotName = botName;
         }
         public char CalculateNextStep(Round round)
         {
